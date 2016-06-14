@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
+ * File is based on work by Gris Ge from the storaged LSM plugin
+ *
  * Author: Gris Ge <fge@redhat.com>
+ * Author: Todd Gill <tgill@redhat.com>
  *
  */
 
@@ -35,7 +38,7 @@
 
 #define  BUILD_DIR "modules/lvm2/storaged-lvm"
 
-#define PACKAGE_SYSCONF_DIR /etc/
+#define PACKAGE_SYSCONF_DIR "/etc/"
 #define _STD_LSM_CONF_PATH_PREFIX PACKAGE_SYSCONF_DIR
 #define _STD_LSM_CONF_PATH "storaged/modules.conf.d/"
 #define _STD_LSM_CONF_FILE "storaged_lsm.conf"
