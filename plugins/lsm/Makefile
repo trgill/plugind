@@ -31,7 +31,7 @@ LDFLAGS +=  -ldl
 #
 # object files
 #
-OBJS = lsm_plugin.o dbus_api.o lsm_dbus_generated.o lsm_data.o
+OBJS = lsm_plugin.o dbus_api.o lsm_dbus_generated.o 
 LDFLAGS += -lpthread $(shell pkg-config --libs glib-2.0 gio-2.0 \
 	gio-unix-2.0 dbus-1) 
 #
