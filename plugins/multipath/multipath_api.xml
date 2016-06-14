@@ -1,0 +1,117 @@
+<node>
+    <!-- com.redhat.mpath.Manager: @short_description: DBus API for multipath 
+        This D-Bus interface is used to describe multipath API. -->
+
+    <interface name="com.redhat.multipath.Manager">
+        <!-- reload: force devmap reload @reload: force devmap reload -->
+        <method name="reload">
+            <arg name="response" direction="out" type="i" />
+        </method>
+        <!-- flush: flush all multipath device maps @flush: flush all multipath 
+            device maps -->
+        <method name="flush">
+            <arg name="response" direction="out" type="i" />
+        </method> 
+
+    </interface>
+    <!-- 
+        Map
+        -->
+    <interface name="com.redhat.multipath.map">
+
+        <property name="uuid" type="s" access="read" />
+        <property name="size" type="u" access="read" />
+        <!-- features: -->
+        <property name="features" type="s" access="read" />
+
+        <!-- pgfailback: failback mode of the map Valid states: 
+                   0 = FAILBACK_UNDEF, 
+                   1 = FAILBACK_MANUAL, 
+                   2 = FAILBACK_IMMEDIATE, 
+                   3 = FAILBACK_FOLLOWOVER -->
+        <property name="pgfailback" type="u" access="read" />
+
+        <!-- pg_policy: path group policy of the map Valid states: 0 = IOPOLICY_UNDEF, 
+                   1 = FAILOVER, 
+                   2 = MULTIBUS, 
+                   3 = GROUP_BY_SERIAL, 
+                   4 = GROUP_BY_PRIO, 
+                   5 = GROUP_BY_NODE_NAME -->
+        <property name="pg_policy" type="u" access="read" />
+
+        <property name="nextpg" type="i" access="read" />
+
+        <property name="bestpg" type="i" access="read" />
+
+        <property name="queuedio" type="i" access="read" />
+
+        <property name="no_path_retry" type="i" access="read" />
+
+
+        <!-- nr_active: number of paths not in failed state -->
+        <property name="nr_active" type="u" access="read" />
+
+        <property name="selector" type="s" access="read" />
+
+
+        <!-- paths: array of path objects -->
+        <property name="paths" type="ao" access="read" />
+
+        <!-- pathgroups: array of pathgroup objects -->
+        <property name="pathgroups" type="s" access="read" />
+        
+    </interface>
+    
+    <!-- 
+        Path
+        -->
+    <interface name="com.redhat.multipath.map.path">
+        <!-- state: state of the path Valid states: 
+                  0 = PATH_WILD, 
+                  1 = PATH_UNCHECKED, 
+                  2 = PATH_DOWN, 
+                  3 = PATH_UP, 
+                  4 = PATH_SHAKY, 
+                  5 = PATH_GHOST, 
+                  6 = PATH_PENDING, 
+                  7 = PATH_TIMEOUT, 
+                  8 = PATH_REMOVED, 
+                  9 = PATH_DELAYED, 
+                  10 = PATH_MAX_STATE -->
+        <property name="state" type="u" access="read" />
+
+        <!-- dmstate: device mapper state of the path. Valid states: 
+                  0 = PSTATE_UNDEF, 
+                  1 = PSTATE_FAILED, 
+                  2 = PSTATE_ACTIVE -->
+        <property name="dmstate" type="u" access="read" />
+
+        <!-- offline: indicator for online/offline status: 
+                  0 = ONLINE, 
+                  1 = OFFLINE -->
+        <property name="offline" type="u" access="read" />
+
+        <!-- bus: bus type: 
+                  0 = SYSFS_BUS_UNDEF,
+                  1 = SYSFS_BUS_SCSI,
+                  2 = SYSFS_BUS_IDE,
+                  3 = SYSFS_BUS_CCW,
+                  4 = SYSFS_BUS_CCISS -->
+        <property name="bus" type="u" access="read" />
+
+        <!-- dev: path device name -->
+        <property name="dev" type="s" access="read" />
+
+        <property name="vendor_id" type="s" access="read" />
+
+        <property name="product_id" type="s" access="read" />
+
+        <property name="rev" type="s" access="read" />
+
+        <property name="serial" type="s" access="read" />
+
+        <property name="tgt_node_name" type="s" access="read" />
+
+    </interface>
+</node>
+
