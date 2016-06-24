@@ -20,10 +20,10 @@
 PLUGIN = ../bin/liblsm.so.0.0
 
 CC = gcc
-DBUS_INCLUDES = $(shell pkg-config --cflags glib-2.0 gio-2.0\
-	gio-unix-2.0 dbus-1)
-CFLAGS += -g -fPIC $(DBUS_INCLUDES) -I./
-LDFLAGS +=  -ldl
+SYSTEMD_INCLUDES = $(shell pkg-config --cflags libsystemd glib-2.0)
+SYSTEMD_LDFLAGS = $(shell pkg-config --libs libsystemd glib-2.0)
+CFLAGS += -g -fPIC $(SYSTEMD_INCLUDES) -I./ -I../../include
+LDFLAGS +=  -ldl $(SYSTEMD_LDFLAGS) -lstoragemgmt
 
 %.o:	%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -31,22 +31,16 @@ LDFLAGS +=  -ldl
 #
 # object files
 #
-OBJS = lsm_plugin.o dbus_api.o lsm_dbus_generated.o 
-LDFLAGS += -lpthread $(shell pkg-config --libs glib-2.0 gio-2.0 \
-	gio-unix-2.0 dbus-1) 
+OBJS = lsm_plugin.o lsm_dbus.o
+LDFLAGS += -lpthread 
 #
 # directives
 #
 all : $(PLUGIN)
 
-$(PLUGIN): lsm_dbus_generated.c $(OBJS)
+$(PLUGIN): $(OBJS)
 	gcc -g -shared -Wl,-soname,$(PLUGIN) \
 		-o $(PLUGIN) $(OBJS) $(LDFLAGS) 
-
-lsm_dbus_generated.c: lsm_api.xml 
-		gdbus-codegen --generate-c-code lsm_dbus_generated \
-		--c-namespace lsm --c-generate-object-manager \
-		--interface-prefix com.redhat.lsm lsm_api.xml
 
 clean:
 	rm -f core *.o $(PLUGIN)

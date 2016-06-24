@@ -17,36 +17,15 @@
  * Author: Todd Gill <tgill@redhat.com>
  */
 
-#ifndef MULTIPATH_COMMON_H
-#define MULTIPATH_COMMON_H
 
-#include <glib.h>
+#ifndef _BLOCK_DEV_H
+#define _BLOCK_DEV_H
 
+void * block_main_loop(void * ap);
 
 #define VERSION "1"
-#define MANAGER_NAME "/Manager"
-#define MULTIPATH_BASE_PATH "/org/storaged/Storaged/multipath" VERSION
-#define MULTIPATH_BASE_INTERFACE "org.storaged.Storaged" VERSION
+#define BLOCK_PATH_BASE_NAME "/org/storaged/Storaged/block" VERSION
+#define BLOCK_INTERFACE_NAME "org.storaged.Storaged.block" VERSION
 
-/* Map Property Definitions */
-#define MAP_NAME 			"MapName"
-#define MAP_WWID	 		"WWID"
-
-/* Group Property Definitions */
-#define GROUP_ID 			"GroupId"
-#define GROUP_PRIORITY 		"GroupPriority"
-#define GROUP_STATUS 		"GroupStatus"
-
-/* Path Property Definitions */
-#define PATH_NAME 			"PathName"
-#define PATH_STATUS 		"PathStatus"
-
-
-void * multipath_main_loop(void * ap);
-void quit_multipath_main_loop();
-
-#define MAP_TYPE "map"
-#define PATH_TYPE "path"
-
-#endif /* MULTIPATH_COMMON_H */
+#endif
 

@@ -17,17 +17,31 @@
 # Author: Todd Gill <tgill@redhat.com>
 #
 
-PLUGINDIRS = \
-	block \
-        multipath \
-        lsm 
+PLUGIN = ../bin/libblock.so.0.0
 
-all:
-	@for dir in $(PLUGINDIRS); do \
-	$(MAKE) -C $$dir || exit $?; \
-	done
+CC = gcc
+SYSTEMD_INCLUDES = $(shell pkg-config --cflags libsystemd)
+SYSTEMD_LDFLAGS = $(shell pkg-config --libs libsystemd) -lparted
+CFLAGS += -g -fPIC $(SYSTEMD_INCLUDES) -I./ -I../../include
+LDFLAGS +=  -ldl $(SYSTEMD_LDFLAGS) 
+
+%.o:	%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+#
+# object files
+#
+OBJS = block_plugin.o block_dbus.o
+LDFLAGS += -lpthread 
+#
+# directives
+#
+all : $(PLUGIN)
+
+$(PLUGIN): $(OBJS)
+	gcc -g -shared -Wl,-soname,$(PLUGIN) \
+		-o $(PLUGIN) $(OBJS) $(LDFLAGS) 
 
 clean:
-	@for dir in $(PLUGINDIRS); do \
-	$(MAKE) -C $$dir clean || exit $?; \
-	done
+	rm -f core *.o $(PLUGIN)
+

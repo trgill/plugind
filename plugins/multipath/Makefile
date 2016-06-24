@@ -20,10 +20,10 @@
 PLUGIN = ../bin/libmpath.so.0.0
 
 CC = gcc
-DBUS_INCLUDES = $(shell pkg-config --cflags glib-2.0 gio-2.0\
-	gio-unix-2.0 dbus-1)
-CFLAGS += -g -fPIC $(DBUS_INCLUDES) -I./ -I../../include
-LDFLAGS +=  -ldl -lmpathcmd
+SYSTEMD_INCLUDES = $(shell pkg-config --cflags libsystemd glib-2.0)
+SYSTEMD_LDFLAGS = $(shell pkg-config --libs libsystemd glib-2.0) 
+CFLAGS += -g -fPIC $(SYSTEMD_INCLUDES) -I./ -I../../include
+LDFLAGS +=  -ldl $(SYSTEMD_LDFLAGS) 
 
 %.o:	%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -31,22 +31,17 @@ LDFLAGS +=  -ldl -lmpathcmd
 #
 # object files
 #
-OBJS = multipath_plugin.o dbus_api.o multipath_dbus_generated.o
-LDFLAGS += -lpthread $(shell pkg-config --libs glib-2.0 gio-2.0 \
-	gio-unix-2.0 dbus-1) -ldmmp
+OBJS = multipath_plugin.o multipath_dbus.o
+LDFLAGS += -lpthread -ldmmp
+
 #
 # directives
 #
 all : $(PLUGIN)
 
-$(PLUGIN): multipath_dbus_generated.c $(OBJS)
+$(PLUGIN): $(OBJS)
 	gcc -g -shared -Wl,-soname,$(PLUGIN) \
 		-o $(PLUGIN) $(OBJS) $(LDFLAGS) 
-
-multipath_dbus_generated.c: multipath_api.xml 
-		gdbus-codegen --generate-c-code multipath_dbus_generated \
-		--c-namespace multipath --c-generate-object-manager \
-		--interface-prefix com.redhat.multipath multipath_api.xml
 
 clean:
 	rm -f core *.o $(PLUGIN)

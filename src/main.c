@@ -160,6 +160,14 @@ plugin_status_t create_plugin_list(GSList **list) {
 	plugin->name = "lsm";
 	*list =  g_slist_append (*list, plugin);
 
+	plugin = malloc(sizeof(struct plugin));
+
+    if (plugin == NULL)
+    	return PLUGIN_ERROR_MALLOC;
+
+	plugin->library_name = "libblock.so.0.0";
+	plugin->name = "lsm";
+	*list =  g_slist_append (*list, plugin);
 	return PLUGIN_OK;
 }
 
