@@ -16,8 +16,8 @@
 #
 # Author: Todd Gill <tgill@redhat.com>
 #
-
-PLUGIN = ../bin/libblock.so.0.0
+PLUGINDIR = ../bin
+PLUGIN = $(PLUGINDIR)/libblock.so.0.0
 
 CC = gcc
 SYSTEMD_INCLUDES = $(shell pkg-config --cflags libsystemd)
@@ -39,6 +39,7 @@ LDFLAGS += -lpthread
 all : $(PLUGIN)
 
 $(PLUGIN): $(OBJS)
+	mkdir  -p $(PLUGINDIR)
 	gcc -g -shared -Wl,-soname,$(PLUGIN) \
 		-o $(PLUGIN) $(OBJS) $(LDFLAGS) 
 

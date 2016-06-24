@@ -22,6 +22,7 @@ BUILDDIRS = \
         plugins 
 
 all:
+	mkdir -p ./bin
 	@for dir in $(BUILDDIRS); do \
 	$(MAKE) -C $$dir || exit $?; \
 	done

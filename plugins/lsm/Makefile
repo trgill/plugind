@@ -17,7 +17,8 @@
 # Author: Todd Gill <tgill@redhat.com>
 #
 
-PLUGIN = ../bin/liblsm.so.0.0
+PLUGINDIR = ../bin
+PLUGIN = $(PLUGINDIR)/liblsm.so.0.0
 
 CC = gcc
 SYSTEMD_INCLUDES = $(shell pkg-config --cflags libsystemd glib-2.0)
@@ -39,6 +40,7 @@ LDFLAGS += -lpthread
 all : $(PLUGIN)
 
 $(PLUGIN): $(OBJS)
+	mkdir  -p $(PLUGINDIR)
 	gcc -g -shared -Wl,-soname,$(PLUGIN) \
 		-o $(PLUGIN) $(OBJS) $(LDFLAGS) 
 
